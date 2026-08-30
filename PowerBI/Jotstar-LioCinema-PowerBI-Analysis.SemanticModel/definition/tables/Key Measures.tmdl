@@ -1,0 +1,108 @@
+table 'Key Measures'
+	lineageTag: 54dde1b1-6128-4905-9965-bf7bef11a31a
+
+	measure 'Total Content items' = DISTINCTCOUNTNOBLANK(dim_merger[content_id])
+		formatString: 0
+		lineageTag: 0f719e0e-b938-47f3-9447-da267aeb6778
+
+	measure 'Total Users' = DISTINCTCOUNTNOBLANK(fact_merger[user_id])
+		formatString: 0
+		lineageTag: edaf2ff0-d616-42aa-b212-05489d741baa
+
+	measure 'Paid Users' = CALCULATE([Total Users],fact_merger[subscription_plan] IN {"Basic","VIP","Premium"})
+		formatString: 0
+		lineageTag: 96de6ba2-a888-4a6b-859c-848219b51532
+
+	measure 'Paid Users %' = DIVIDE([Paid Users],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3e966752-9f94-493f-9414-4a5ab4c397e4
+
+	measure 'Active Users' = CALCULATE([Total Users],fact_merger[last_active_date]=BLANK())
+		formatString: 0
+		lineageTag: 39f0abba-9416-4a00-8410-80af6a185b5f
+
+	measure 'Active User %' = DIVIDE([Active Users],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5387c8bf-c170-4d01-9c8b-c2a545c74948
+
+	measure 'Inactive Users' = [Total Users]-[Active Users]
+		formatString: 0
+		lineageTag: d6761a52-6ff1-49a5-ac2a-1181394dba84
+
+	measure 'Inactive Rate' = DIVIDE([Inactive Users],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3fce64f8-2f51-484c-8a45-75b61f047202
+
+	measure 'Active Rate' = DIVIDE([Active Users],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 363b6958-e972-4939-a663-fd79f76339b5
+
+		changedProperty = IsHidden
+
+	measure 'Upgraded users' = CALCULATE([Total Users],fact_merger[subscription_plan]="Free" && fact_merger[new_subscription_plan] in {"Basic","Premium","VIP"}|| fact_merger[subscription_plan]="Basic" && fact_merger[new_subscription_plan] in {"Premium","VIP"} || fact_merger[subscription_plan] = "VIP" && fact_merger[new_subscription_plan]="Premium")
+		formatString: 0
+		lineageTag: 74e70ddd-ba64-4caa-86c0-8c3533562206
+
+	measure 'Upgraded Rate' = DIVIDE([Upgraded users],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 87ff5833-d7ac-43f9-8d38-51ae0803c1df
+
+	measure 'Downgraded users1' = CALCULATE([Total Users],fact_merger[subscription_plan] in {"Basic","Premium","VIP"} && fact_merger[new_subscription_plan]="Free"|| fact_merger[subscription_plan] ="VIP" && fact_merger[new_subscription_plan] in {"Free","Basic"}|| fact_merger[subscription_plan]="Premium" && fact_merger[new_subscription_plan] in {"Free","Basic","VIP"})
+		formatString: 0
+		lineageTag: 036a1477-0d0d-4e52-a79d-793712d8a6de
+
+	measure 'Downgrade Rate' = DIVIDE([Downgraded users1],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: cddeeb96-9dcb-49f4-9b01-ad8d1f8d0812
+
+	measure 'Upgrade/Downgrade Rate(%)' = DIVIDE([Upgraded users]+[Downgraded users1],[Total Users],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: eedd165a-92b7-4559-8d33-d03f6ea29b05
+
+	measure 'Free Users' = [Total Users]-[Paid Users]
+		formatString: 0
+		lineageTag: f4aab30b-7461-4aea-b147-1c48a0d5f260
+
+	measure 'Total Watch Time' = SUM(fact_merger[total_watch_time_mins])
+		formatString: 0
+		lineageTag: d13ee40d-4975-427e-ba1e-ff86a8210f34
+
+	measure 'Avg Watch Time per User' = DIVIDE([Total Watch Time],[Total Users])
+		lineageTag: d2275d0f-45ee-49cf-99dd-2a63681df5a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Downgraded Users' =
+			
+			CALCULATE(
+			    [Total Users],
+			    (
+			        fact_merger[subscription_plan] = "Basic"
+			            && fact_merger[new_subscription_plan] = "Free"
+			    )
+			    ||
+			    (
+			        fact_merger[subscription_plan] = "VIP"
+			            && fact_merger[new_subscription_plan] = "Free"
+			    )
+			    ||
+			    (
+			        fact_merger[subscription_plan] = "Premium"
+			            && fact_merger[new_subscription_plan] IN {"Free", "Basic", "VIP"}
+			    )
+			)
+		formatString: 0
+		lineageTag: e0e40a7a-413e-4985-b90a-4c522d9f0c53
+
+	partition 'Key Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

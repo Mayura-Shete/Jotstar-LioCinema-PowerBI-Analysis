@@ -1,0 +1,105 @@
+table 'liocinema_db subscribers'
+	lineageTag: d520acff-4e59-47f2-b976-62291728980b
+
+	column user_id
+		dataType: string
+		lineageTag: 22372a94-baed-4aad-bec3-aa2b61a15d68
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: 9af8d658-d8d4-4279-98a6-8d26b85f22af
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_tier
+		dataType: string
+		lineageTag: 6d0781ba-6011-4f97-b698-1722519a11c4
+		summarizeBy: none
+		sourceColumn: city_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column subscription_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4830ae14-061e-4944-8b7a-361816db92c6
+		summarizeBy: none
+		sourceColumn: subscription_date
+
+		variation Variation
+			isDefault
+			relationship: e1117d35-0890-4f55-9c47-ec06962efc14
+			defaultHierarchy: LocalDateTable_b921da22-acde-4062-8cb8-795470d1b03c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column subscription_plan
+		dataType: string
+		lineageTag: 152c0fea-91aa-4e7e-ab9d-4369b07090b3
+		summarizeBy: none
+		sourceColumn: subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_active_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a79c7384-f9f1-448d-ab95-fcdc5b72754c
+		summarizeBy: none
+		sourceColumn: last_active_date
+
+		variation Variation
+			isDefault
+			relationship: fb98f065-bb69-40ef-ab41-dc4ce94768e8
+			defaultHierarchy: LocalDateTable_d616649b-1dfb-4cae-ace2-ddf20e2ce80b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column plan_change_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 468cedee-13dd-4777-871a-98f3a16efd93
+		summarizeBy: none
+		sourceColumn: plan_change_date
+
+		variation Variation
+			isDefault
+			relationship: 97bd043a-88c3-4f8b-9a96-9402203be263
+			defaultHierarchy: LocalDateTable_81ae23e9-2b58-4c54-9478-28210f58ae8f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column new_subscription_plan
+		dataType: string
+		lineageTag: 3d275139-4f18-45f7-83dd-64ed14c68742
+		summarizeBy: none
+		sourceColumn: new_subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'liocinema_db subscribers' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "liocinema_db", [ReturnSingleDatabase=true]),
+				    liocinema_db_subscribers = Source{[Schema="liocinema_db",Item="subscribers"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(liocinema_db_subscribers,{"liocinema_db.content_consumption"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

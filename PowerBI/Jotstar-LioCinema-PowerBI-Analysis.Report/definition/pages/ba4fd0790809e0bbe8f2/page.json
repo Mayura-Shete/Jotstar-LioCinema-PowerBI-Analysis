@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ba4fd0790809e0bbe8f2",
+  "displayName": "Home",
+  "displayOption": "ActualSize",
+  "height": 1050,
+  "width": 1500,
+  "objects": {
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#95EAF9'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "titleSize": {
+            "expr": {
+              "Literal": {
+                "Value": "14L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

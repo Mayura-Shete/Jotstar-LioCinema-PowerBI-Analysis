@@ -1,0 +1,132 @@
+table Merge1
+	lineageTag: e20e8814-3a81-40fb-80bb-3fed8d02c56a
+
+	column user_id
+		dataType: string
+		lineageTag: 72584b96-1035-440b-8028-633fb8080315
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: 7226d30b-ab4f-4d9b-b580-d92da28394ce
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_watch_time_mins
+		dataType: int64
+		formatString: 0
+		lineageTag: 34619fd6-a84b-484a-befd-026bb1f3bd8d
+		summarizeBy: sum
+		sourceColumn: total_watch_time_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: 7d619db3-a389-4040-a69c-630b56790adb
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_tier
+		dataType: string
+		lineageTag: 7e16963e-4845-4d65-ab14-b116b6510164
+		summarizeBy: none
+		sourceColumn: city_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column subscription_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d6aba689-c748-4512-a470-d6b45068b16c
+		summarizeBy: none
+		sourceColumn: subscription_date
+
+		variation Variation
+			isDefault
+			relationship: eec06f9f-b9f9-4f9d-b732-b7c4c988e602
+			defaultHierarchy: LocalDateTable_569fa863-2be1-454d-b114-bb9c4c7498da.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column subscription_plan
+		dataType: string
+		lineageTag: 32ed4f80-91d5-4c98-ad9f-76d3e651c9de
+		summarizeBy: none
+		sourceColumn: subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_active_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3a4dfa86-c664-4402-b1d1-a9bc89763e1f
+		summarizeBy: none
+		sourceColumn: last_active_date
+
+		variation Variation
+			isDefault
+			relationship: 5070d619-32e5-4e93-819e-51363335403c
+			defaultHierarchy: LocalDateTable_128a1fa2-cc43-480d-9599-35cd34c36d52.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column plan_change_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8395b175-7b9e-4afb-859c-35766f67256d
+		summarizeBy: none
+		sourceColumn: plan_change_date
+
+		variation Variation
+			isDefault
+			relationship: 0c2df14c-035e-4114-bd91-406f9a09f0df
+			defaultHierarchy: LocalDateTable_15eef234-2ee7-44b9-bf8f-7e3e77afe695.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column new_subscription_plan
+		dataType: string
+		lineageTag: 1308d217-d281-45d2-91f7-241827b81e06
+		summarizeBy: none
+		sourceColumn: new_subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column Custom
+		dataType: string
+		lineageTag: 4e8c9910-a165-4ba1-81f5-e36f55b312cd
+		summarizeBy: none
+		sourceColumn: Custom
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Merge1 = m
+		mode: import
+		source =
+				let
+				    Source = Table.NestedJoin(#"jotstar_db content_consumption", {"user_id"}, #"jotstar_db subscribers", {"user_id"}, "jotstar_db subscribers", JoinKind.LeftOuter),
+				    #"Expanded jotstar_db.subscribers" = Table.ExpandRecordColumn(Source, "jotstar_db.subscribers", {"user_id", "age_group", "city_tier", "subscription_date", "subscription_plan", "last_active_date", "plan_change_date", "new_subscription_plan", "jotstar_db.content_consumption"}, {"user_id.1", "age_group", "city_tier", "subscription_date", "subscription_plan", "last_active_date", "plan_change_date", "new_subscription_plan", "jotstar_db.content_consumption"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Expanded jotstar_db.subscribers",{"user_id", "user_id.1", "device_type", "total_watch_time_mins", "age_group", "city_tier", "subscription_date", "subscription_plan", "last_active_date", "plan_change_date", "new_subscription_plan", "jotstar_db.content_consumption", "jotstar_db subscribers"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Reordered Columns",{"user_id.1", "jotstar_db.content_consumption", "jotstar_db subscribers"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Custom", each "jotstar")
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

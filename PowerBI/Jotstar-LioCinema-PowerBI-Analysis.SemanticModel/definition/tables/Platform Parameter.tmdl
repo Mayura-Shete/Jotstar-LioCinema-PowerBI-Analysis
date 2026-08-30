@@ -1,0 +1,47 @@
+table 'Platform Parameter'
+	lineageTag: 7db15ad6-0f73-4175-aeb9-40758a98435f
+
+	column 'Platform Parameter'
+		lineageTag: 6e4d7be2-be7b-4824-84f8-4365867a75bf
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Platform Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Platform Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Platform Parameter Fields'
+		isHidden
+		lineageTag: 33f5e5a3-3be9-4161-9a3f-7d2c4294629f
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Platform Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Platform Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 19dab3a3-f55a-4a78-8498-ee7f2e183220
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Platform Parameter' = calculated
+		mode: import
+		source =
+				{
+				    ("platform", NAMEOF('dim_platform'[platform]), 0)
+				}
+
+	annotation PBI_Id = 70a10298d242470480c2dc8f0aae7932
+

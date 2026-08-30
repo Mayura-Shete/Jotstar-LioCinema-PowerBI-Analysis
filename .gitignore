@@ -1,0 +1,8 @@
+# Power BI local/cache files
+**/.pbi/
+**/localSettings.json
+**/*.tmp
+**/*.bak
+
+# Power BI auto-generated temporary files
+**/.pbi-tools/

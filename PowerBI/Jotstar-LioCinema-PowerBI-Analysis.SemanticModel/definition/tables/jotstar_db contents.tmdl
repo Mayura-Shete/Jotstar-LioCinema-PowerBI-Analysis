@@ -1,0 +1,67 @@
+table 'jotstar_db contents'
+	lineageTag: a4c95f62-bbfd-43d5-80e6-0c5c7d11e669
+
+	column content_id
+		dataType: string
+		lineageTag: 2e9df240-b45a-41b1-aa7a-50e3895c4ad7
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column content_type
+		dataType: string
+		lineageTag: 62af4e62-f3e7-4fdb-914f-364b94b5b9c4
+		summarizeBy: none
+		sourceColumn: content_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column language
+		dataType: string
+		lineageTag: 5ff904c1-63fa-43f4-ba16-99b4b7fc32c4
+		summarizeBy: none
+		sourceColumn: language
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 330f4140-d806-44d9-9fc7-124165a75f32
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time
+		dataType: int64
+		formatString: 0
+		lineageTag: c96a4c5f-e96d-4f7f-aa78-62adc7f898da
+		summarizeBy: sum
+		sourceColumn: run_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column platform
+		dataType: string
+		lineageTag: 906dffcb-e1fd-45b1-9940-fecde3ee21e3
+		summarizeBy: none
+		sourceColumn: platform
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'jotstar_db contents' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "jotstar_db", [ReturnSingleDatabase=true]),
+				    jotstar_db_contents = Source{[Schema="jotstar_db",Item="contents"]}[Data],
+				    #"Added Custom" = Table.AddColumn(jotstar_db_contents, "Custom", each "jotstar"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"Custom", "platform"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

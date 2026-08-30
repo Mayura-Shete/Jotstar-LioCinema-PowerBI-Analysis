@@ -1,0 +1,67 @@
+table 'liocinema_db contents'
+	lineageTag: 7fb6d702-92e8-4ba7-87d1-c18341e87cf0
+
+	column content_id
+		dataType: string
+		lineageTag: 90bda7c3-5744-44c9-b025-dff30e51a052
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column content_type
+		dataType: string
+		lineageTag: d6c29688-d563-4b2f-b67c-835ffb44eb28
+		summarizeBy: none
+		sourceColumn: content_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column language
+		dataType: string
+		lineageTag: a51d990f-f823-4898-8235-d20e78fbc05e
+		summarizeBy: none
+		sourceColumn: language
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 27a6a60e-4d5c-461e-8093-9e4d9c625041
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time
+		dataType: int64
+		formatString: 0
+		lineageTag: b32a41d9-7f1c-4b92-be0f-ecaab05f059c
+		summarizeBy: sum
+		sourceColumn: run_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column platform
+		dataType: string
+		lineageTag: 4c7f76cc-017f-4908-a887-54c6189ab616
+		summarizeBy: none
+		sourceColumn: platform
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'liocinema_db contents' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "liocinema_db", [ReturnSingleDatabase=true]),
+				    liocinema_db_contents = Source{[Schema="liocinema_db",Item="contents"]}[Data],
+				    #"Added Custom" = Table.AddColumn(liocinema_db_contents, "Custom", each "liocinema"),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"Custom", "platform"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,50 @@
+table Parameter
+	lineageTag: f4197f66-b6d2-4b6f-8b5e-77252d558ba5
+
+	column Parameter
+		lineageTag: 37a3e7b3-280f-47c0-83dd-aa7c1bd61a1c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: b832964d-4dbd-40d0-8dac-1111bd8e7143
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 8c4d9131-6a04-4d2f-be27-a58157930429
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("city_tier", NAMEOF('fact_merger'[city_tier]), 0),
+				    ("age_group", NAMEOF('fact_merger'[age_group]), 1),
+				    ("subscription_plan", NAMEOF('fact_merger'[subscription_plan]), 2),
+				    ("device_type", NAMEOF('fact_merger'[device_type]), 3)
+				}
+
+	annotation PBI_Id = 5bce02403e6e490688969a97242eecf7
+

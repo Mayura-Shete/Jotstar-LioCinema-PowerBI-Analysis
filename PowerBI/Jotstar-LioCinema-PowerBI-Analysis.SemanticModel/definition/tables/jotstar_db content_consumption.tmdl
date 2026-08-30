@@ -1,0 +1,41 @@
+table 'jotstar_db content_consumption'
+	lineageTag: aff04dd4-7190-4a8f-944a-cc85db16bfec
+
+	column user_id
+		dataType: string
+		lineageTag: eb38cee3-3ef6-48c1-8b84-d906dac545c3
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: d4c1e543-0833-48ff-a118-65da4333802b
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_watch_time_mins
+		dataType: int64
+		formatString: 0
+		lineageTag: b134fe01-6668-4562-b102-4e67caf8e5c3
+		summarizeBy: sum
+		sourceColumn: total_watch_time_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'jotstar_db content_consumption' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "jotstar_db", [ReturnSingleDatabase=true]),
+				    jotstar_db_content_consumption = Source{[Schema="jotstar_db",Item="content_consumption"]}[Data]
+				in
+				    jotstar_db_content_consumption
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

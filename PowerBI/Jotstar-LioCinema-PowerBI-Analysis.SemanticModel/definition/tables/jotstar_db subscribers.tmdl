@@ -1,0 +1,105 @@
+table 'jotstar_db subscribers'
+	lineageTag: 1f9957d1-5ee3-486c-96b9-5fa9602a0a4a
+
+	column user_id
+		dataType: string
+		lineageTag: 8a092cf0-5fd1-4d8d-a104-d895e4db55ac
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: 2d8dfa10-5aaa-4792-97e1-eda869d388c8
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_tier
+		dataType: string
+		lineageTag: 9011c34a-f6c8-4149-a4d8-11f470a14cfe
+		summarizeBy: none
+		sourceColumn: city_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column subscription_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c71ca8d6-b4fb-47c1-b65d-2ae49a16b29f
+		summarizeBy: none
+		sourceColumn: subscription_date
+
+		variation Variation
+			isDefault
+			relationship: a23dd24f-131a-414a-87c9-077b41b6ab08
+			defaultHierarchy: LocalDateTable_fcb2cf9d-a1de-44e4-829d-742ddcc79bf2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column subscription_plan
+		dataType: string
+		lineageTag: 8d339f65-a00c-49f1-bd57-ddf7c2179ef7
+		summarizeBy: none
+		sourceColumn: subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_active_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3eb80e31-2336-4148-9cb8-5bd990741840
+		summarizeBy: none
+		sourceColumn: last_active_date
+
+		variation Variation
+			isDefault
+			relationship: 46d76870-6d8a-4565-9610-76f14b682d45
+			defaultHierarchy: LocalDateTable_4051b910-a8c2-47f6-8779-ec748eda523f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column plan_change_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 619e21aa-dfd6-43ee-b264-78efffaa2b0c
+		summarizeBy: none
+		sourceColumn: plan_change_date
+
+		variation Variation
+			isDefault
+			relationship: 210f5efc-c8fa-4e6d-85fb-704bec4a88f2
+			defaultHierarchy: LocalDateTable_92e377ac-f1f1-482f-8d23-75bac4654162.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column new_subscription_plan
+		dataType: string
+		lineageTag: 81400646-5743-4855-b337-2884230fd14b
+		summarizeBy: none
+		sourceColumn: new_subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'jotstar_db subscribers' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "jotstar_db", [ReturnSingleDatabase=true]),
+				    jotstar_db_subscribers = Source{[Schema="jotstar_db",Item="subscribers"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(jotstar_db_subscribers,{"jotstar_db.content_consumption"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

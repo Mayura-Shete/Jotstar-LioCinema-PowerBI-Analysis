@@ -1,0 +1,49 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["jotstar_db content_consumption","jotstar_db subscribers","jotstar_db contents","liocinema_db contents","liocinema_db subscribers","liocinema_db content_consumption","Merge1","Merge2","fact_merger","dim_merger","dim_platform","Key Measures"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table 'jotstar_db content_consumption'
+ref table 'jotstar_db subscribers'
+ref table DateTableTemplate_75e5c48a-a7b1-47b5-aaf8-2002c7be7251
+ref table LocalDateTable_fcb2cf9d-a1de-44e4-829d-742ddcc79bf2
+ref table LocalDateTable_4051b910-a8c2-47f6-8779-ec748eda523f
+ref table LocalDateTable_92e377ac-f1f1-482f-8d23-75bac4654162
+ref table 'jotstar_db contents'
+ref table 'liocinema_db contents'
+ref table 'liocinema_db subscribers'
+ref table LocalDateTable_b921da22-acde-4062-8cb8-795470d1b03c
+ref table LocalDateTable_d616649b-1dfb-4cae-ace2-ddf20e2ce80b
+ref table LocalDateTable_81ae23e9-2b58-4c54-9478-28210f58ae8f
+ref table 'liocinema_db content_consumption'
+ref table Merge1
+ref table LocalDateTable_569fa863-2be1-454d-b114-bb9c4c7498da
+ref table LocalDateTable_128a1fa2-cc43-480d-9599-35cd34c36d52
+ref table LocalDateTable_15eef234-2ee7-44b9-bf8f-7e3e77afe695
+ref table Merge2
+ref table LocalDateTable_12af8df2-1317-4e5b-a170-d71b2763db2a
+ref table LocalDateTable_fc9e3b5e-c6e1-4e7d-9987-b59c412c27bf
+ref table LocalDateTable_ff03131e-d7c8-4cb2-b2b2-fb1ca2336579
+ref table fact_merger
+ref table LocalDateTable_cc4fdc8d-fa4e-4d63-9265-e410987d232c
+ref table LocalDateTable_a352e7db-7374-45ac-beca-817a6ce1cc73
+ref table dim_merger
+ref table dim_platform
+ref table dim_date
+ref table 'Key Measures'
+ref table Parameter
+ref table 'Platform Parameter'
+
+ref cultureInfo en-IN
+

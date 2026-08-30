@@ -1,0 +1,124 @@
+table fact_merger
+	lineageTag: 333bf7f6-7c25-4291-b14d-19b7a517783d
+
+	column user_id
+		dataType: string
+		lineageTag: 87ff6f69-9d12-4f0b-9508-529a92c2eaf4
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: a571749a-eeb5-4caa-9f4e-21d6c06d01af
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_watch_time_mins
+		dataType: int64
+		formatString: 0
+		lineageTag: 08a6692c-32de-44bd-9f4c-a98cbe607af8
+		summarizeBy: sum
+		sourceColumn: total_watch_time_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: 00683bfa-e677-499b-ac43-e6033e93b570
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_tier
+		dataType: string
+		lineageTag: 74956fe9-9513-4b30-b114-45b73c02d82a
+		summarizeBy: none
+		sourceColumn: city_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column subscription_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4c1afce8-bfce-4f6c-9073-3449923ea7ac
+		summarizeBy: none
+		sourceColumn: subscription_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column subscription_plan
+		dataType: string
+		lineageTag: 27f0fb88-600e-45e2-9027-117bbfc51454
+		summarizeBy: none
+		sourceColumn: subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_active_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a79e49a2-2947-4ff2-9cce-0c75ba7bb304
+		summarizeBy: none
+		sourceColumn: last_active_date
+
+		variation Variation
+			isDefault
+			relationship: 416922b1-1bb2-471a-9044-43d087431f89
+			defaultHierarchy: LocalDateTable_cc4fdc8d-fa4e-4d63-9265-e410987d232c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column plan_change_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0fc3fa5e-3357-48f7-bc25-fdc1850a43c2
+		summarizeBy: none
+		sourceColumn: plan_change_date
+
+		variation Variation
+			isDefault
+			relationship: bd5ad24b-21ec-4720-9b9d-56ed37bafdc2
+			defaultHierarchy: LocalDateTable_a352e7db-7374-45ac-beca-817a6ce1cc73.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column new_subscription_plan
+		dataType: string
+		lineageTag: be4a95c3-33f2-4c46-baf4-e231503770da
+		summarizeBy: none
+		sourceColumn: new_subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column platform
+		dataType: string
+		lineageTag: 3417cc60-32a1-4f97-8cc8-2adbb9a9b044
+		summarizeBy: none
+		sourceColumn: platform
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_merger = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({Merge1, Merge2}),
+				    #"Renamed Columns" = Table.RenameColumns(Source,{{"Custom", "platform"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

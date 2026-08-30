@@ -1,0 +1,94 @@
+relationship a23dd24f-131a-414a-87c9-077b41b6ab08
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'jotstar_db subscribers'.subscription_date
+	toColumn: LocalDateTable_fcb2cf9d-a1de-44e4-829d-742ddcc79bf2.Date
+
+relationship 46d76870-6d8a-4565-9610-76f14b682d45
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'jotstar_db subscribers'.last_active_date
+	toColumn: LocalDateTable_4051b910-a8c2-47f6-8779-ec748eda523f.Date
+
+relationship 210f5efc-c8fa-4e6d-85fb-704bec4a88f2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'jotstar_db subscribers'.plan_change_date
+	toColumn: LocalDateTable_92e377ac-f1f1-482f-8d23-75bac4654162.Date
+
+relationship 2d131fbc-f59e-4da1-9121-04ec5e769d4b
+	fromColumn: 'jotstar_db content_consumption'.user_id
+	toColumn: 'jotstar_db subscribers'.user_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship e1117d35-0890-4f55-9c47-ec06962efc14
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'liocinema_db subscribers'.subscription_date
+	toColumn: LocalDateTable_b921da22-acde-4062-8cb8-795470d1b03c.Date
+
+relationship fb98f065-bb69-40ef-ab41-dc4ce94768e8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'liocinema_db subscribers'.last_active_date
+	toColumn: LocalDateTable_d616649b-1dfb-4cae-ace2-ddf20e2ce80b.Date
+
+relationship 97bd043a-88c3-4f8b-9a96-9402203be263
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'liocinema_db subscribers'.plan_change_date
+	toColumn: LocalDateTable_81ae23e9-2b58-4c54-9478-28210f58ae8f.Date
+
+relationship 7b7e6536-671a-49f8-ad5b-3bab7b55414a
+	fromColumn: 'liocinema_db content_consumption'.user_id
+	toColumn: 'liocinema_db subscribers'.user_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship eec06f9f-b9f9-4f9d-b732-b7c4c988e602
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge1.subscription_date
+	toColumn: LocalDateTable_569fa863-2be1-454d-b114-bb9c4c7498da.Date
+
+relationship 5070d619-32e5-4e93-819e-51363335403c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge1.last_active_date
+	toColumn: LocalDateTable_128a1fa2-cc43-480d-9599-35cd34c36d52.Date
+
+relationship 0c2df14c-035e-4114-bd91-406f9a09f0df
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge1.plan_change_date
+	toColumn: LocalDateTable_15eef234-2ee7-44b9-bf8f-7e3e77afe695.Date
+
+relationship db3b97fa-6232-499a-bdcb-a47602ae2466
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge2.subscription_date
+	toColumn: LocalDateTable_12af8df2-1317-4e5b-a170-d71b2763db2a.Date
+
+relationship 5c393684-c987-45f4-a914-b5f3cfa8d471
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge2.last_active_date
+	toColumn: LocalDateTable_fc9e3b5e-c6e1-4e7d-9987-b59c412c27bf.Date
+
+relationship 09b87057-4c08-4487-b756-3113d97980b4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Merge2.plan_change_date
+	toColumn: LocalDateTable_ff03131e-d7c8-4cb2-b2b2-fb1ca2336579.Date
+
+relationship 416922b1-1bb2-471a-9044-43d087431f89
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_merger.last_active_date
+	toColumn: LocalDateTable_cc4fdc8d-fa4e-4d63-9265-e410987d232c.Date
+
+relationship bd5ad24b-21ec-4720-9b9d-56ed37bafdc2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_merger.plan_change_date
+	toColumn: LocalDateTable_a352e7db-7374-45ac-beca-817a6ce1cc73.Date
+
+relationship f192e79b-b1ca-4304-b097-87fe7147292c
+	fromColumn: dim_merger.platform
+	toColumn: dim_platform.platform
+
+relationship 0f11d34c-4956-6e48-96cd-7020e9489ede
+	fromColumn: fact_merger.platform
+	toColumn: dim_platform.platform
+
+relationship 82ad7f84-3c73-5685-87bb-80ab52260e10
+	fromColumn: fact_merger.subscription_date
+	toColumn: dim_date.Date
+

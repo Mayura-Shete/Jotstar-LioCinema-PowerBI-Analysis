@@ -1,0 +1,66 @@
+table dim_date
+	lineageTag: 945010e7-fe55-4d7e-9c76-888f89a9f02c
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: b5e7b419-1fbe-46e6-bb78-c38e2101674a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Number' = DAY([Date])
+		formatString: 0
+		lineageTag: a0e9b7a0-3750-4459-b204-27fa6e42584d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName = FORMAT([Date],"ddd")
+		lineageTag: 9b9a912b-3d98-40ac-a503-401a49022ab9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year = YEAR([Date])
+		formatString: 0
+		lineageTag: 631ee013-b917-4bed-83f6-a1c30f0eb7ad
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter = "Q" & QUARTER([Date])
+		lineageTag: 05233e95-7b6e-436c-b92f-cee55c584f98
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month number' = MONTH([Date])
+		formatString: 0
+		lineageTag: c0da70c9-2c5a-4e43-bfdd-2da02b423f3b
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName = FORMAT([Date],"mmm")
+		lineageTag: fc4aa5dc-2321-4bd5-8a14-309376675700
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WeekDay Number' = WEEKDAY([Date])
+		formatString: 0
+		lineageTag: 8ab06495-4795-41a1-aeec-6ae4bff3dcd3
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = calculated
+		mode: import
+		source = calendarauto()
+
+	annotation PBI_Id = 454ecf5b288741f7981be6ea3a71c7d6
+

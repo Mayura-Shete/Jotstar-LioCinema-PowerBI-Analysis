@@ -1,0 +1,131 @@
+table Merge2
+	lineageTag: 9f6df0ab-422b-492b-bd38-b5ebc98e0891
+
+	column user_id
+		dataType: string
+		lineageTag: 3c72d918-31b5-4021-9cbc-3baf542d19ae
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: e71b8c50-a63a-4ca2-957a-7baff71b9a51
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_watch_time_mins
+		dataType: int64
+		formatString: 0
+		lineageTag: eba5af55-a24a-4ec8-96db-c722744fb54b
+		summarizeBy: sum
+		sourceColumn: total_watch_time_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: 90d31371-bcf9-4b5b-8ba1-2f48cef9249d
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column city_tier
+		dataType: string
+		lineageTag: a6951d81-31fb-4e98-87ac-430332ffd58a
+		summarizeBy: none
+		sourceColumn: city_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column subscription_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ee9188e6-8c25-4195-983a-ec74f5b08133
+		summarizeBy: none
+		sourceColumn: subscription_date
+
+		variation Variation
+			isDefault
+			relationship: db3b97fa-6232-499a-bdcb-a47602ae2466
+			defaultHierarchy: LocalDateTable_12af8df2-1317-4e5b-a170-d71b2763db2a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column subscription_plan
+		dataType: string
+		lineageTag: 943cdc72-e3e9-4625-984b-4c4ade906422
+		summarizeBy: none
+		sourceColumn: subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_active_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7a396234-9e72-4d21-ba01-ce0c05aeeed9
+		summarizeBy: none
+		sourceColumn: last_active_date
+
+		variation Variation
+			isDefault
+			relationship: 5c393684-c987-45f4-a914-b5f3cfa8d471
+			defaultHierarchy: LocalDateTable_fc9e3b5e-c6e1-4e7d-9987-b59c412c27bf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column plan_change_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a02b754e-fb49-4e50-81ea-bc54377035e5
+		summarizeBy: none
+		sourceColumn: plan_change_date
+
+		variation Variation
+			isDefault
+			relationship: 09b87057-4c08-4487-b756-3113d97980b4
+			defaultHierarchy: LocalDateTable_ff03131e-d7c8-4cb2-b2b2-fb1ca2336579.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column new_subscription_plan
+		dataType: string
+		lineageTag: faacf3a3-f5a2-4ebd-a2a6-aa1a41be2a64
+		summarizeBy: none
+		sourceColumn: new_subscription_plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column Custom
+		dataType: string
+		lineageTag: 3a05c864-e89a-4cc4-9451-998d3807dee2
+		summarizeBy: none
+		sourceColumn: Custom
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Merge2 = m
+		mode: import
+		source =
+				let
+				    Source = Table.NestedJoin(#"liocinema_db content_consumption", {"user_id"}, #"liocinema_db subscribers", {"user_id"}, "liocinema_db subscribers", JoinKind.LeftOuter),
+				    #"Expanded liocinema_db.subscribers" = Table.ExpandRecordColumn(Source, "liocinema_db.subscribers", {"age_group", "city_tier", "subscription_date", "subscription_plan", "last_active_date", "plan_change_date", "new_subscription_plan", "liocinema_db.content_consumption"}, {"age_group", "city_tier", "subscription_date", "subscription_plan", "last_active_date", "plan_change_date", "new_subscription_plan", "liocinema_db.content_consumption"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Expanded liocinema_db.subscribers",{"liocinema_db.content_consumption", "liocinema_db subscribers"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Custom", each "liocinema")
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

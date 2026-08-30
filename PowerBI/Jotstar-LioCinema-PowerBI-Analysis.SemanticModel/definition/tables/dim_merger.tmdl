@@ -1,0 +1,64 @@
+table dim_merger
+	lineageTag: d41af272-4e5e-465c-b99a-72ec5074eb5d
+
+	column content_id
+		dataType: string
+		lineageTag: 6c1a0a39-47dc-4dc7-a316-c52a8336d586
+		summarizeBy: none
+		sourceColumn: content_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column content_type
+		dataType: string
+		lineageTag: 6fc4513a-4035-4681-ab28-21d0c1df6f62
+		summarizeBy: none
+		sourceColumn: content_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column language
+		dataType: string
+		lineageTag: e11e0ca1-ea8e-4c87-8059-65971c7b545f
+		summarizeBy: none
+		sourceColumn: language
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre
+		dataType: string
+		lineageTag: 81ae9cc6-a267-4188-b890-ef8833984d86
+		summarizeBy: none
+		sourceColumn: genre
+
+		annotation SummarizationSetBy = Automatic
+
+	column run_time
+		dataType: int64
+		formatString: 0
+		lineageTag: 3be717fc-ce2a-4ee6-a418-656921dd3954
+		summarizeBy: sum
+		sourceColumn: run_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column platform
+		dataType: string
+		lineageTag: ea4d112b-746d-4308-a3ea-905bc23e2c1d
+		summarizeBy: none
+		sourceColumn: platform
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_merger = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({#"jotstar_db contents", #"liocinema_db contents"})
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,41 @@
+table 'liocinema_db content_consumption'
+	lineageTag: 655e36e5-4851-4352-acf3-de3942e8bc66
+
+	column user_id
+		dataType: string
+		lineageTag: 4bb6fe5d-22e6-46f7-9a34-30f311a2dc77
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: c01ea891-eddd-40ff-82fb-739b0ccb6095
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_watch_time_mins
+		dataType: int64
+		formatString: 0
+		lineageTag: ca75a9fb-0418-423b-9310-b61c2ed2d8da
+		summarizeBy: sum
+		sourceColumn: total_watch_time_mins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'liocinema_db content_consumption' = m
+		mode: import
+		source =
+				let
+				    Source = MySQL.Database("localhost", "liocinema_db", [ReturnSingleDatabase=true]),
+				    liocinema_db_content_consumption = Source{[Schema="liocinema_db",Item="content_consumption"]}[Data]
+				in
+				    liocinema_db_content_consumption
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
